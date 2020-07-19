@@ -35,7 +35,7 @@ func newPath(v string) (path, error) {
 	return path{dir: filepath.Dir(v), name: name, extention: ext}, nil
 }
 
-func (p path) path() string {
+func (p path) string() string {
 	return p.dir + "/" + p.name + p.extention
 }
 

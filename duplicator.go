@@ -31,7 +31,7 @@ func newDuplicator(src, dst, filename string, o offset, l limit) (duplicator, er
 }
 
 func (dp duplicator) duplicate() error {
-	srcFile, err := os.Open(dp.src.path.path())
+	srcFile, err := os.Open(dp.src.path.string())
 	if err != nil {
 		return err
 	}
@@ -43,7 +43,7 @@ func (dp duplicator) duplicate() error {
 	)
 	for i := offset; i < limit; i++ {
 		dp.dst.addFilenameSuffixInt(i)
-		dstFile, err := os.Create(dp.dst.path.path())
+		dstFile, err := os.Create(dp.dst.path.string())
 		if err != nil {
 			return err
 		}
