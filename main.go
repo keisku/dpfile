@@ -36,14 +36,16 @@ func main() {
 				Value:   "",
 			},
 			&cli.StringFlag{
-				Name:  "offset",
-				Value: "0",
-				Usage: "-1 < offset",
+				Name:    "offset",
+				Aliases: []string{"o"},
+				Value:   "0",
+				Usage:   "-1 < offset",
 			},
 			&cli.StringFlag{
-				Name:  "limit",
-				Value: "1",
-				Usage: "0 < limit < 10001",
+				Name:    "limit",
+				Aliases: []string{"l"},
+				Value:   "1",
+				Usage:   "0 < limit < 10001",
 			},
 		},
 		Action: func(c *cli.Context) error {
