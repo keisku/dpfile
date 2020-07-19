@@ -17,8 +17,8 @@ GLOBAL OPTIONS:
    --src value, -s value       path to the file you want to duplicate
    --dst value, -d value       path to the destination which the file will be duplicated (default: "./")
    --filename value, -f value  
-   --offset value              -1 < offset (default: "0")
-   --limit value               0 < limit < 10001 (default: "1")
+   --offset value, -o value    -1 < offset (default: "0")
+   --limit value, -l value     0 < limit < 10001 (default: "1")
    --help, -h                  show help (default: false)
 ```
 
