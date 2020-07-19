@@ -48,6 +48,11 @@ func (p *path) duplicateFilename(target path) {
 	p.extention = target.extention
 }
 
+func (p *path) setFilename(name, ext string) {
+	p.name = name
+	p.extention = ext
+}
+
 func (p *path) addFilenameSuffixInt(i int) {
 	if i == 0 {
 		return
@@ -80,13 +85,7 @@ func newDst(s src, dir, filename string) (dst, error) {
 		path.duplicateFilename(s.path)
 		return dst{path}, nil
 	}
-	if filepath.Ext(filename) == "" {
-		path.name = filename
-		path.extention = s.extention
-		return dst{path}, nil
-	}
-	name, ext := separateFileName(filename)
-	path.name = name
-	path.extention = ext
+	name, _ := separateFileName(filename)
+	path.setFilename(name, s.extention)
 	return dst{path}, nil
 }

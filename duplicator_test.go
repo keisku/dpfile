@@ -132,6 +132,34 @@ func Test_newDuplicator(t *testing.T) {
 			},
 		},
 		{
+			name: `given src "testdir/helloworld.txt", dst "testdir/", filename "hello.png"`,
+			args: args{
+				src:      "testdir/helloworld.txt",
+				dst:      "testdir/",
+				filename: "hello.png",
+				o:        0,
+				l:        1,
+			},
+			want: duplicator{
+				src: src{
+					path: path{
+						dir:       "testdir",
+						name:      "helloworld",
+						extention: ".txt",
+					},
+				},
+				dst: dst{
+					path: path{
+						dir:       "testdir",
+						name:      "hello",
+						extention: ".txt",
+					},
+				},
+				offset: 0,
+				limit:  1,
+			},
+		},
+		{
 			name: `given src "testdir/helloworld.txt", dst "testdir2/"`,
 			args: args{
 				src:      "testdir/helloworld.txt",
