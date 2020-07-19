@@ -42,7 +42,8 @@ func (dp duplicator) duplicate() error {
 		limit  = dp.limit.int() + offset
 	)
 	for i := offset; i < limit; i++ {
-		dstFile, err := os.Create(dp.dst.addInt(i).path())
+		dp.dst.addFilenameSuffixInt(i)
+		dstFile, err := os.Create(dp.dst.path.path())
 		if err != nil {
 			return err
 		}

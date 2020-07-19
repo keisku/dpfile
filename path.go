@@ -43,21 +43,16 @@ func (p path) filename() string {
 	return p.name + p.extention
 }
 
-func (p *path) copyFilename(name string) {
-	p.name = name + "_duplicated"
+func (p *path) duplicateFilename(target path) {
+	p.name = target.name + "_duplicated"
+	p.extention = target.extention
 }
 
-func (p path) setName(n string) path {
-	p.name = n
-	return p
-}
-
-func (p path) addInt(i int) path {
+func (p *path) addFilenameSuffixInt(i int) {
 	if i == 0 {
-		return p
+		return
 	}
 	p.name += strconv.Itoa(i)
-	return p
 }
 
 type src struct {
@@ -82,8 +77,7 @@ func newDst(s src, dir, filename string) (dst, error) {
 		return dst{}, err
 	}
 	if filename == "" || filename == s.filename() {
-		path.copyFilename(s.name)
-		path.extention = s.extention
+		path.duplicateFilename(s.path)
 		return dst{path}, nil
 	}
 	if filepath.Ext(filename) == "" {
