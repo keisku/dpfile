@@ -57,10 +57,15 @@ func main() {
 			if err != nil {
 				return err
 			}
-			dp, err := newDuplicator(c.String("src"), c.String("dst"), c.String("filename"), offset, limit)
+			src, err := newSrc(c.String("src"))
 			if err != nil {
 				return err
 			}
+			dst, err := newDst(src, c.String("dst"), c.String("filename"))
+			if err != nil {
+				return err
+			}
+			dp := newDuplicator(src, dst, offset, limit)
 			return dp.duplicate()
 		},
 	}

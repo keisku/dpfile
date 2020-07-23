@@ -13,21 +13,13 @@ type duplicator struct {
 	limit  limit
 }
 
-func newDuplicator(src, dst, filename string, o offset, l limit) (duplicator, error) {
-	s, err := newSrc(src)
-	if err != nil {
-		return duplicator{}, err
-	}
-	d, err := newDst(s, dst, filename)
-	if err != nil {
-		return duplicator{}, err
-	}
+func newDuplicator(src src, dst dst, o offset, l limit) duplicator {
 	return duplicator{
-		src:    s,
-		dst:    d,
+		src:    src,
+		dst:    dst,
 		offset: o,
 		limit:  l,
-	}, nil
+	}
 }
 
 func (dp duplicator) duplicate() error {
@@ -42,7 +34,9 @@ func (dp duplicator) duplicate() error {
 		limit  = dp.limit.int() + offset
 	)
 	for i := offset; i < limit; i++ {
-		dp.dst.addFilenameSuffixInt(i)
+		if i > 0 {
+			dp.dst.filename.addSuffix(strconv.Itoa(i))
+		}
 		dstFile, err := os.Create(dp.dst.path.string())
 		if err != nil {
 			return err

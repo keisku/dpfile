@@ -1,91 +1,53 @@
 package main
 
-import (
-	"os"
-	"path/filepath"
-	"strconv"
-	"strings"
-)
-
-func separateFileName(filename string) (name, ext string) {
-	ext = filepath.Ext(filename)
-	base := filepath.Base(filename)
-	name = strings.Replace(base, ext, "", 1)
-	return
-}
-
 type path struct {
-	dir       string
-	name      string
-	extention string
+	dir      dir
+	filename filename
 }
 
-func newPath(v string) (path, error) {
-	stat, err := os.Stat(v)
-	if err != nil {
-		return path{}, err
-	}
-	if stat.IsDir() {
-		return path{dir: filepath.Dir(v)}, nil
-	}
-	if !stat.Mode().IsRegular() {
-		return path{}, errBrokenFile
-	}
-	name, ext := separateFileName(v)
-	return path{dir: filepath.Dir(v), name: name, extention: ext}, nil
+func newPath(d dir, fn filename) path {
+	return path{dir: d, filename: fn}
 }
 
 func (p path) string() string {
-	return p.dir + "/" + p.name + p.extention
+	return p.dir.string() + "/" + p.filename.string()
 }
 
-func (p path) filename() string {
-	return p.name + p.extention
+func (p *path) applyFilename(fn filename) {
+	p.filename = fn
 }
 
-func (p *path) duplicateFilename(target path) {
-	p.name = target.name + "_duplicated"
-	p.extention = target.extention
-}
-
-func (p *path) setFilename(name, ext string) {
-	p.name = name
-	p.extention = ext
-}
-
-func (p *path) addFilenameSuffixInt(i int) {
-	if i == 0 {
-		return
-	}
-	p.name += strconv.Itoa(i)
-}
-
-type src struct {
-	path
-}
+type src struct{ path }
 
 func newSrc(path string) (src, error) {
-	p, err := newPath(path)
+	dir, err := newDir(path)
 	if err != nil {
 		return src{}, err
 	}
-	return src{p}, nil
+	fn, err := newFilename(path)
+	if err != nil {
+		return src{}, err
+	}
+	if !fn.hasName() {
+		return src{}, errNotFoundFileName
+	}
+	if !fn.hasExt() {
+		return src{}, errNotFoundExt
+	}
+	return src{newPath(dir, fn)}, nil
 }
 
-type dst struct {
-	path
-}
+type dst struct{ path }
 
-func newDst(s src, dir, filename string) (dst, error) {
-	path, err := newPath(dir)
+func newDst(src src, destination, filename string) (dst, error) {
+	dir, err := newDir(destination)
 	if err != nil {
 		return dst{}, err
 	}
-	if filename == "" || filename == s.filename() {
-		path.duplicateFilename(s.path)
-		return dst{path}, nil
+	fn, err := newFilename(filename)
+	if err != nil {
+		return dst{}, err
 	}
-	name, _ := separateFileName(filename)
-	path.setFilename(name, s.extention)
-	return dst{path}, nil
+	fn.merge(src)
+	return dst{newPath(dir, fn)}, nil
 }
