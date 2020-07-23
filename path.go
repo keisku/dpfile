@@ -13,8 +13,9 @@ func (p path) string() string {
 	return p.dir.string() + "/" + p.filename.string()
 }
 
-func (p *path) applyFilename(fn filename) {
+func (p path) applyFilename(fn filename) path {
 	p.filename = fn
+	return p
 }
 
 type src struct{ path }

@@ -28,13 +28,12 @@ func newFilename(v string) (filename, error) {
 
 func (fn *filename) merge(src src) {
 	if fn.hasName() && fn.equalName(src.filename.name()) {
-		fn.addSuffix("_duplicated")
+		*fn = fn.addSuffix("_duplicated")
 	}
 	if !fn.hasName() {
-		fn.applyName(src.filename.name())
-		fn.addSuffix("_duplicated")
+		*fn = fn.applyName(src.filename.name()).addSuffix("_duplicated")
 	}
-	fn.applyExt(src.filename.ext())
+	*fn = fn.applyExt(src.filename.ext())
 }
 
 func newEmptyFilename() filename {
@@ -53,16 +52,19 @@ func (fn filename) ext() string {
 	return fn.extention
 }
 
-func (fn *filename) addSuffix(s string) {
+func (fn filename) addSuffix(s string) filename {
 	fn.basename += s
+	return fn
 }
 
-func (fn *filename) applyName(n string) {
+func (fn filename) applyName(n string) filename {
 	fn.basename += n
+	return fn
 }
 
-func (fn *filename) applyExt(ext string) {
+func (fn filename) applyExt(ext string) filename {
 	fn.extention += ext
+	return fn
 }
 func (fn filename) hasName() bool {
 	return fn.basename != ""

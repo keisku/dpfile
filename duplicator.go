@@ -34,10 +34,11 @@ func (dp duplicator) duplicate() error {
 		limit  = dp.limit.int() + offset
 	)
 	for i := offset; i < limit; i++ {
+		fn := dp.dst.path.filename
 		if i > 0 {
-			dp.dst.filename.addSuffix(strconv.Itoa(i))
+			fn = dp.dst.filename.addSuffix(strconv.Itoa(i))
 		}
-		dstFile, err := os.Create(dp.dst.path.string())
+		dstFile, err := os.Create(dp.dst.applyFilename(fn).string())
 		if err != nil {
 			return err
 		}
