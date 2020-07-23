@@ -2,6 +2,8 @@
 
 dpfile is a file cloning tool. You can duplicate a file with any name and sequential number.
 
+<img src="./testdir/gopher.png" width="250px">
+
 ## Install
 
 ```
