@@ -1,5 +1,9 @@
 # dpfile
 
+[![Github issues](https://img.shields.io/github/issues/kskumgk63/dpfile)](https://github.com/kskumgk63/dpfile/issues)
+[![Github forks](https://img.shields.io/github/forks/kskumgk63/dpfile)](https://github.com/kskumgk63/dpfile/network/members)
+[![Github stars](https://img.shields.io/github/stars/kskumgk63/dpfile)](https://github.com/kskumgk63/dpfile/stargazers)
+
 dpfile is a file cloning tool. You can duplicate a file with any name and sequential number.
 
 <img src="./testdir/gopher.png" width="250px">
